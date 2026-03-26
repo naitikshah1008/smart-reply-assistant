@@ -1,13 +1,10 @@
 import json
-import os
+import re
 from typing import Dict
 
 import requests
-from dotenv import load_dotenv
 
 from prompts import SYSTEM_PROMPT
-
-load_dotenv()
 
 
 class LLMError(Exception):
@@ -16,60 +13,49 @@ class LLMError(Exception):
 
 class LLMClient:
     def __init__(self) -> None:
-        self.api_key = os.getenv("LLM_API_KEY", "").strip()
-        self.api_url = os.getenv("LLM_API_URL", "").strip()
-        self.model = os.getenv("LLM_MODEL", "").strip()
-
-        if not self.api_key:
-            raise LLMError("Missing LLM_API_KEY in .env")
-        if not self.api_url:
-            raise LLMError("Missing LLM_API_URL in .env")
-        if not self.model:
-            raise LLMError("Missing LLM_MODEL in .env")
+        self.api_url = "http://localhost:11434/api/generate"
+        self.model = "llama3"
 
     def generate_replies(self, incoming_message: str) -> Dict[str, str]:
         if not incoming_message.strip():
             raise LLMError("Incoming message is empty.")
 
-        payload = {
-            "model": self.model,
-            "response_format": {"type": "json_object"},
-            "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {
-                    "role": "user",
-                    "content": (
-                        "Write three reply options for this Hinge message:\n\n"
-                        f"{incoming_message.strip()}"
-                    ),
-                },
-            ],
-            "temperature": 0.9,
-        }
+        prompt = f"""{SYSTEM_PROMPT}
 
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-        }
+Incoming message:
+{incoming_message.strip()}
+
+Return only JSON in exactly this format:
+{{
+  "playful": "...",
+  "casual": "...",
+  "flirty_light": "..."
+}}
+
+Do not add any explanation before or after the JSON.
+"""
 
         try:
             response = requests.post(
                 self.api_url,
-                headers=headers,
-                json=payload,
-                timeout=30,
+                json={
+                    "model": self.model,
+                    "prompt": prompt,
+                    "stream": False,
+                },
+                timeout=60,
             )
             response.raise_for_status()
         except requests.RequestException as exc:
-            raise LLMError(f"API request failed: {exc}") from exc
+            raise LLMError(f"Ollama request failed: {exc}") from exc
 
         data = response.json()
+        raw_text = data.get("response", "").strip()
 
-        try:
-            content = data["choices"][0]["message"]["content"]
-            parsed = json.loads(content)
-        except (KeyError, IndexError, json.JSONDecodeError) as exc:
-            raise LLMError("Could not parse model response.") from exc
+        if not raw_text:
+            raise LLMError("Ollama returned an empty response.")
+
+        parsed = self._parse_response(raw_text)
 
         required_keys = ["playful", "casual", "flirty_light"]
         for key in required_keys:
@@ -77,3 +63,38 @@ class LLMClient:
                 raise LLMError(f"Missing or invalid key in response: {key}")
 
         return parsed
+
+    def _parse_response(self, raw_text: str) -> Dict[str, str]:
+        # First try normal JSON parsing
+        try:
+            return json.loads(raw_text)
+        except json.JSONDecodeError:
+            pass
+
+        # Try extracting the JSON-looking part
+        start = raw_text.find("{")
+        end = raw_text.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            candidate = raw_text[start:end + 1]
+            try:
+                return json.loads(candidate)
+            except json.JSONDecodeError:
+                pass
+
+        # Fallback: regex extract fields manually
+        extracted = {}
+        patterns = {
+            "playful": r'"playful"\s*:\s*"(.+?)"',
+            "casual": r'"casual"\s*:\s*"(.+?)"',
+            "flirty_light": r'"flirty_light"\s*:\s*"(.+?)"',
+        }
+
+        for key, pattern in patterns.items():
+            match = re.search(pattern, raw_text, re.DOTALL)
+            if match:
+                extracted[key] = match.group(1).strip()
+
+        if len(extracted) == 3:
+            return extracted
+
+        raise LLMError(f"Model did not return valid JSON.\n\nRaw response:\n{raw_text}")

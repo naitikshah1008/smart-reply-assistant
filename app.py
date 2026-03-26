@@ -19,7 +19,6 @@ class ReplyAssistantApp:
             messagebox.showerror("Configuration Error", str(exc))
 
         self._build_ui()
-        self._load_clipboard()
 
     def _build_ui(self) -> None:
         container = tk.Frame(self.root, padx=16, pady=16)
@@ -27,7 +26,7 @@ class ReplyAssistantApp:
 
         header = tk.Label(
             container,
-            text="Hinge Reply Assistant",
+            text="Reply Assistant",
             font=("Arial", 18, "bold"),
         )
         header.pack(anchor="w")
