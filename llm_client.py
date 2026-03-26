@@ -27,9 +27,9 @@ Incoming message:
 
 Return only JSON in exactly this format:
 {{
-  "playful": "...",
+  "thoughtful": "...",
   "casual": "...",
-  "flirty_light": "..."
+  "friendly": "..."
 }}
 
 Do not add any explanation before or after the JSON.
@@ -57,7 +57,7 @@ Do not add any explanation before or after the JSON.
 
         parsed = self._parse_response(raw_text)
 
-        required_keys = ["playful", "casual", "flirty_light"]
+        required_keys = ["thoughtful", "casual", "friendly"]
         for key in required_keys:
             if key not in parsed or not isinstance(parsed[key], str):
                 raise LLMError(f"Missing or invalid key in response: {key}")
@@ -65,13 +65,11 @@ Do not add any explanation before or after the JSON.
         return parsed
 
     def _parse_response(self, raw_text: str) -> Dict[str, str]:
-        # First try normal JSON parsing
         try:
             return json.loads(raw_text)
         except json.JSONDecodeError:
             pass
 
-        # Try extracting the JSON-looking part
         start = raw_text.find("{")
         end = raw_text.rfind("}")
         if start != -1 and end != -1 and end > start:
@@ -81,12 +79,11 @@ Do not add any explanation before or after the JSON.
             except json.JSONDecodeError:
                 pass
 
-        # Fallback: regex extract fields manually
         extracted = {}
         patterns = {
-            "playful": r'"playful"\s*:\s*"(.+?)"',
+            "thoughtful": r'"thoughtful"\s*:\s*"(.+?)"',
             "casual": r'"casual"\s*:\s*"(.+?)"',
-            "flirty_light": r'"flirty_light"\s*:\s*"(.+?)"',
+            "friendly": r'"friendly"\s*:\s*"(.+?)"',
         }
 
         for key, pattern in patterns.items():

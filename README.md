@@ -2,7 +2,7 @@
 
 A lightweight macOS desktop app that generates smart, human-like replies for any conversation using a local LLM.
 
-This tool acts as a reply assistant (not an auto-bot), helping you quickly craft context-aware responses for chats, messages, emails, and more.
+This tool acts as a smart reply assistant (not an auto-bot), helping you quickly craft context-aware responses for chats, messages, emails, and more.
 
 ---
 

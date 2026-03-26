@@ -21,7 +21,7 @@ def start_ollama():
 class ReplyAssistantApp:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
-        self.root.title("Reply Assistant")
+        self.root.title("Smart Reply Assistant")
         self.root.geometry("760x560")
 
         self.client = None
@@ -38,14 +38,14 @@ class ReplyAssistantApp:
 
         header = tk.Label(
             container,
-            text="Reply Assistant",
+            text="Smart Reply Assistant",
             font=("Arial", 18, "bold"),
         )
         header.pack(anchor="w")
 
         subheader = tk.Label(
             container,
-            text="Paste or auto-load a copied message, then generate three reply options.",
+            text="Paste or load any message, then generate three smart reply options.",
             justify="left",
         )
         subheader.pack(anchor="w", pady=(4, 12))
@@ -83,9 +83,9 @@ class ReplyAssistantApp:
         self.reply_frames = {}
 
         for key, title in [
-            ("playful", "Playful"),
+            ("thoughtful", "Thoughtful"),
             ("casual", "Casual"),
-            ("flirty_light", "Flirty-light"),
+            ("friendly", "Friendly"),
         ]:
             frame = tk.LabelFrame(container, text=title, padx=10, pady=10)
             frame.pack(fill="x", pady=(0, 10))
