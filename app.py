@@ -2,10 +2,22 @@ import tkinter as tk
 from tkinter import messagebox
 
 import pyperclip
+import subprocess
+import time
 
 from llm_client import LLMClient, LLMError
 
-
+def start_ollama():
+    try:
+        subprocess.Popen(
+            ["ollama", "serve"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        time.sleep(2)
+    except Exception as e:
+        print("Could not start Ollama:", e)
+        
 class ReplyAssistantApp:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
@@ -161,6 +173,7 @@ class ReplyAssistantApp:
 
 
 def main() -> None:
+    start_ollama()
     root = tk.Tk()
     root.geometry("760x560+100+100")
     root.lift()
