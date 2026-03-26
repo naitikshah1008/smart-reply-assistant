@@ -43,7 +43,7 @@ This tool acts as a smart reply assistant (not an auto-bot), helping you quickly
 
 - Python (Tkinter)
 - Ollama (local LLM runtime)
-- LLaMA 3 (or other supported models)
+- LLaMA 3
 - Requests (HTTP client)
 
 ---
