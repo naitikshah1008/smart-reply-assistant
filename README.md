@@ -1,17 +1,18 @@
 # 📌 Reply Assistant
 
-A lightweight macOS desktop app that generates smart, human-like replies for dating app conversations using a local LLM.
+A lightweight macOS desktop app that generates smart, human-like replies for any conversation using a local LLM.
 
-This tool acts as a **reply assistant (not an auto-bot)** — you stay in control while getting quick, context-aware suggestions.
+This tool acts as a reply assistant (not an auto-bot), helping you quickly craft context-aware responses for chats, messages, emails, and more.
 
 ---
 
 ## 🚀 Features
 
-- Generate 3 reply styles:
-  - Playful  
-  - Casual  
-  - Flirty-light  
+- Works for any conversation:
+  - Messaging apps
+  - Emails
+  - Social media chats
+  - General communication 
 - Uses a **local LLM (Ollama)** — no API cost or rate limits  
 - Simple Tkinter-based UI  
 - Clipboard support for quick input  
@@ -22,11 +23,11 @@ This tool acts as a **reply assistant (not an auto-bot)** — you stay in contro
 
 ## 🧠 How It Works
 
-1. Copy a message from your phone
+1. Copy any message (from phone or browser)
 2. Open the app on your Mac
 3. Paste or load clipboard
-4. Click **Generate Replies**
-5. Choose a reply → copy → paste back on your phone
+4. Click Generate Replies
+5. Choose a reply → copy → paste anywhere
 
 ---
 
