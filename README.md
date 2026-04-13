@@ -1,4 +1,4 @@
-# 📌 Smart Reply Assistant
+# Smart Reply Assistant
 
 A lightweight macOS desktop app that generates smart, human-like replies for any conversation using a local LLM.
 
@@ -6,7 +6,7 @@ This tool acts as a smart reply assistant (not an auto-bot), helping you quickly
 
 ---
 
-## 🚀 Features
+## Features
 
 - Works for any conversation:
   - Messaging apps
@@ -21,7 +21,7 @@ This tool acts as a smart reply assistant (not an auto-bot), helping you quickly
 
 ---
 
-## 📸 UI Preview
+## UI Preview
 
 <p align="center">
   <img src="assets/ux.png" alt="App UI" width="700"/>
@@ -29,7 +29,7 @@ This tool acts as a smart reply assistant (not an auto-bot), helping you quickly
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 1. Copy any message (from phone or browser)
 2. Open the app on your Mac
@@ -39,7 +39,7 @@ This tool acts as a smart reply assistant (not an auto-bot), helping you quickly
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - Python (Tkinter)
 - Ollama (local LLM runtime)
@@ -48,7 +48,7 @@ This tool acts as a smart reply assistant (not an auto-bot), helping you quickly
 
 ---
 
-## ⚙️ Setup
+## Setup
 
 ### 1. Clone the repo
 ```bash
@@ -79,7 +79,7 @@ ollama pull llama3
 
 ---
 
-## ▶️ Run the app
+## Run the app
 ```bash
 python3 app.py
 ```
@@ -100,7 +100,7 @@ smart-reply-assistant/
 
 ---
 
-## ⚠️ Notes
+## Notes
 
 - This app **does not automate sending messages**
 - It is designed as a **manual assistant**
@@ -109,7 +109,7 @@ smart-reply-assistant/
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
 - Global hotkey (generate replies instantly)
 - Menu bar macOS app
@@ -119,7 +119,7 @@ smart-reply-assistant/
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 Naitik Shah  
 Master’s in Computer Science - Oregon State University  
